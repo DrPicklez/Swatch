@@ -14,9 +14,16 @@ void SwatchMaker::mousePressEvent(QMouseEvent *event) {
     switch(event->type()){
     case QMouseEvent::MouseButtonPress:
     {
-        std::cout << "press" << std::endl;
-        pressed = true;
-        break;
+        if(event->button() == Qt::MouseButton::LeftButton){
+            std::cout << "pressL" << std::endl;
+            break;
+        }
+
+        if(event->button() == Qt::MouseButton::RightButton){
+            std::cout << "pressL" << std::endl;
+            pressedR = true;
+            break;
+        }
     }
     case QMouseEvent::MouseButtonDblClick:
     {
@@ -28,13 +35,22 @@ void SwatchMaker::mousePressEvent(QMouseEvent *event) {
 
 void SwatchMaker::mouseMoveEvent(QMouseEvent *event){
     drawColorPreview(event->pos());
-    if(pressed){
+    if(pressedR){
         makeSwatch(&swatch, event->pos());
     }
+//    event->buttons().
 }
 void SwatchMaker::mouseReleaseEvent(QMouseEvent *event){
-    pressed = false;
-    std::cout << "release" << std::endl;
+    if(event->button() == Qt::MouseButton::LeftButton){
+        std::cout << "releaseL" << std::endl;
+
+    }
+
+    if(event->button() == Qt::MouseButton::RightButton){
+        std::cout << "releaseR" << std::endl;
+        pressedR = false;
+
+    }
 }
 void SwatchMaker::paintEvent(QPaintEvent *event){
     QPainter painter(this);

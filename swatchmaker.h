@@ -34,7 +34,7 @@ private:
     QImage image;
     QImage swatch;
     QPoint lastPoint;
-    bool pressed;
+    bool pressedL, pressedR;
 
     void drawColorPreview(const QPoint &point);
 };
