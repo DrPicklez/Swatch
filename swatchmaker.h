@@ -6,6 +6,8 @@
 #include <QPoint>
 #include <QWidget>
 //#include <QtDebug>
+#include <iostream>
+
 
 class SwatchMaker : public QWidget
 {
@@ -32,6 +34,7 @@ private:
     QImage image;
     QImage swatch;
     QPoint lastPoint;
+    bool pressed;
 
     void drawColorPreview(const QPoint &point);
 };

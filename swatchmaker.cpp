@@ -11,25 +11,36 @@ void SwatchMaker::mousePressEvent(QMouseEvent *event) {
     QPoint point = event->pos();
     colorPicked = image.pixelColor(point);
 
-
+    switch(event->type()){
+    case QMouseEvent::MouseButtonPress:
+    {
+        std::cout << "press" << std::endl;
+        pressed = true;
+        break;
+    }
+    case QMouseEvent::MouseButtonDblClick:
+    {
+        std::cout << "double" << std::endl;
+        break;
+    }
+}
 }
 
 void SwatchMaker::mouseMoveEvent(QMouseEvent *event){
     drawColorPreview(event->pos());
-    makeSwatch(&swatch, event->pos());
+    if(pressed){
+        makeSwatch(&swatch, event->pos());
+    }
 }
 void SwatchMaker::mouseReleaseEvent(QMouseEvent *event){
-
+    pressed = false;
+    std::cout << "release" << std::endl;
 }
 void SwatchMaker::paintEvent(QPaintEvent *event){
     QPainter painter(this);
     QRect dirtyRect = event->rect();
     painter.drawImage(dirtyRect, swatch, dirtyRect);
     painter.drawImage(dirtyRect, image, dirtyRect);
-//    painter.drawRect(QRect(image.width(), image.height(), image.width(), image.height()),QString(colorPicked.value()));
-//    painter.drawStaticText(100, 100, QStaticText(QString("hello")));
-//    update();
-
 }
 
 void SwatchMaker::resizeEvent(QResizeEvent *event)
@@ -52,7 +63,14 @@ void SwatchMaker::drawColorPreview(const QPoint &point){
 //                        Qt::RoundJoin));
 //    std::cout << point.x() << std::endl;
     image.fill(QColor(255, 255, 255, 0));
-    painter.setBrush(image.pixelColor(point));
+
+    QColor colorAtPoint = swatch.pixelColor(point);
+    painter.setBrush(colorAtPoint);
+
+    std::cout << colorAtPoint.red() << " : " <<
+                 colorAtPoint.green() << " : " <<
+                 colorAtPoint.blue() << std::endl;
+
     painter.drawEllipse(point, image.width()/20, image.height()/20);
     update();
 
