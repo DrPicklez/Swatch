@@ -27,7 +27,7 @@ void SwatchMaker::wheelEvent(QWheelEvent *event)
 //        saturation = saturation%255;
 
         std::cout << "saturation  :  " << saturation <<std::endl;
-        makeSwatch(&swatch, event->pos(), saturation);
+        makeSwatch(&swatch, lastPoint, saturation);
     }
 
     event->accept();
@@ -63,7 +63,8 @@ void SwatchMaker::mousePressEvent(QMouseEvent *event) {
 void SwatchMaker::mouseMoveEvent(QMouseEvent *event){
     drawColorPreview(event->pos());
     if(pressedR){
-        makeSwatch(&swatch, event->pos(), saturation);
+        lastPoint = event->pos();
+        makeSwatch(&swatch, lastPoint, saturation);
     }
 }
 void SwatchMaker::mouseReleaseEvent(QMouseEvent *event){
@@ -115,8 +116,8 @@ void SwatchMaker::resizeImage(QImage *image, QImage *swatch, const QSize &newSiz
     newImage.fill(QColor(255, 255, 255, 0));
     *image = newImage;
     *swatch = newImage;
-    QPoint point = QPoint(image->width()/2, image->height()/2);
-    makeSwatch(swatch, point, saturation);
+    lastPoint = QPoint(image->width()/2, image->height()/2);
+    makeSwatch(swatch, lastPoint, saturation);
 }
 
 void SwatchMaker::makeSwatch(QImage *image, const QPoint &point, const int sat){
